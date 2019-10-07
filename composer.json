@@ -15,7 +15,6 @@
         "issues": "http://github.com/chrometoasters/silverstripe-metadescription-fallback/issues"
     },
     "require": {
-        "php": ">= 5.4, <7.2",
         "silverstripe/cms": "^3.2"
     }
 }
