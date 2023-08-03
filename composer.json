@@ -19,6 +19,6 @@
         "issues": "http://github.com/chrometoasters/silverstripe-metadescription-fallback/issues"
     },
     "require": {
-        "silverstripe/cms": "^4.0"
+        "silverstripe/cms": "^4.0 || ^5.0"
     }
 }
