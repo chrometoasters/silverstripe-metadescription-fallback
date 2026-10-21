@@ -4,8 +4,8 @@ namespace Chrometoaster\SEO\DataExtensions;
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\Controller;
+use SilverStripe\Core\Extension;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBText;
 
 /**
@@ -28,7 +28,7 @@ use SilverStripe\ORM\FieldType\DBText;
  *
  * @package Chrometoaster\SEO\DataExtensions
  */
-class MetaDescriptionFallbackExtension extends DataExtension
+class MetaDescriptionFallbackExtension extends Extension
 {
     /**
      * Fallback fields for meta description header
