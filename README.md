@@ -2,8 +2,10 @@
 
 ## Requirements
 
-* SilverStripe 4.0 and above
-* PHP 5.6 and above
+* Silverstripe CMS 6
+* PHP 8.3 or later
+
+For Silverstripe CMS 4 and 5, use the 2.x releases.
 
 ## Maintainers
 

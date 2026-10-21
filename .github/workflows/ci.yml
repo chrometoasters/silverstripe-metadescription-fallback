@@ -1,5 +1,5 @@
 # Continuous integration for chrometoaster/silverstripe-metadescription-fallback:
-# Silverstripe CMS 5.4 on PHP 8.3.
+# Silverstripe CMS 6.3 on PHP 8.4 and 8.5.
 #
 # Two jobs run in parallel, each over a matrix: a PHP syntax lint of src and
 # tests on every PHP version, and the module's PHPUnit suite on every CMS and
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.3']
+        php: ['8.4', '8.5']
     steps:
       - uses: actions/checkout@v7
         with:
@@ -63,8 +63,8 @@ jobs:
   # connects to MySQL as root; SapphireTest creates and drops its own
   # temporary databases. Any failure or error fails the job.
   #
-  # CMS 5.4, the line the module's current release supports: the suite is
-  # proved against the module as released before the CMS 6 port.
+  # CMS 6.3 has only release candidates on Packagist, so the project allows
+  # RC stability; prefer-stable takes 6.3.0 by itself when it is tagged.
   phpunit:
     name: phpunit (CMS ${{ matrix.cms }}, PHP ${{ matrix.php }})
     runs-on: ubuntu-24.04
@@ -73,10 +73,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - cms: '5.4'
-            recipe: '~5.4.0'
-            stability: stable
-            php: '8.3'
+          - cms: '6.3'
+            recipe: '~6.3.0@rc'
+            stability: RC
+            php: '8.4'
+          - cms: '6.3'
+            recipe: '~6.3.0@rc'
+            stability: RC
+            php: '8.5'
     services:
       mysql:
         image: mysql:8.0
@@ -108,10 +112,7 @@ jobs:
       # branch or detached merge ref does not matter; everything else installs
       # at the newest version the pair's stability allows, stable first. The
       # path repository symlinks the checkout into vendor/, so the suite runs
-      # the checkout's own files. Advisory blocking is off: every CMS 5
-      # framework release now carries a Packagist security advisory, and with
-      # blocking on Composer either refuses the install or falls back to the
-      # unreleased 5.4.x-dev branch.
+      # the checkout's own files.
       - name: Create the CMS ${{ matrix.cms }} project
         run: |
           mkdir project
@@ -133,16 +134,11 @@ jobs:
               "chrometoaster/silverstripe-metadescription-fallback": "*@dev"
             },
             "require-dev": {
-              "phpunit/phpunit": "^9.6"
+              "phpunit/phpunit": "^11.3"
             },
             "minimum-stability": "${{ matrix.stability }}",
             "prefer-stable": true,
             "config": {
-              "policy": {
-                "advisories": {
-                  "block": false
-                }
-              },
               "allow-plugins": {
                 "composer/installers": true,
                 "silverstripe/recipe-plugin": true,
@@ -194,7 +190,7 @@ jobs:
             composer show "$package" | grep -E '^(name|versions|source|dist)'
           done
 
-      # PHPUnit runs before dev/build: a flushed dev/build caches a class
+      # PHPUnit runs before db:build: a flushed db:build caches a class
       # manifest without the test classes, which PHPUnit would then reuse.
       - name: PHPUnit
         working-directory: project
@@ -205,7 +201,7 @@ jobs:
       - name: Build the database
         if: ${{ !cancelled() }}
         working-directory: project
-        run: vendor/bin/sake dev/build flush=1
+        run: vendor/bin/sake db:build --flush
 
       - name: Show the log
         if: ${{ failure() || cancelled() }}
