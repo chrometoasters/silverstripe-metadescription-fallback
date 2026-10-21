@@ -27,6 +27,9 @@ and need meta tags included in the source of the page.
 
 In this case the MetadataTagsTrait also needs to be used by those dataobjects.
 
+Like `SiteTree::MetaTags()` in Silverstripe CMS 6, the trait's `MetaTags()` calls the `updateMetaTags` extension hook
+(2.x called `MetaTags`), so extensions that adjust the tags of such dataobjects implement `updateMetaTags(&$tags)`.
+
 ## Installation with [Composer](https://getcomposer.org/)
 
 ```

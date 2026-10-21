@@ -107,7 +107,7 @@ class MetaDescriptionFallbackExtension extends Extension
      *
      * @param $tags
      */
-    public function MetaTags(&$tags)
+    public function updateMetaTags(&$tags)
     {
         $metaDescription = $this->getGeneralMetaDescription();
 
