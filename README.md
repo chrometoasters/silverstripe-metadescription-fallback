@@ -2,8 +2,10 @@
 
 ## Requirements
 
-* SilverStripe 4.0 and above
-* PHP 5.6 and above
+* Silverstripe CMS 6
+* PHP 8.3 or later
+
+For Silverstripe CMS 4 and 5, use the 2.x releases.
 
 ## Maintainers
 
@@ -24,6 +26,9 @@ The extension this module provides can also be applied to dataobjects, for examp
 and need meta tags included in the source of the page.
 
 In this case the MetadataTagsTrait also needs to be used by those dataobjects.
+
+Like `SiteTree::MetaTags()` in Silverstripe CMS 6, the trait's `MetaTags()` calls the `updateMetaTags` extension hook
+(2.x called `MetaTags`), so extensions that adjust the tags of such dataobjects implement `updateMetaTags(&$tags)`.
 
 ## Installation with [Composer](https://getcomposer.org/)
 

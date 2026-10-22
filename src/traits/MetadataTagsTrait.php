@@ -55,7 +55,7 @@ trait MetadataTagsTrait
             $tagString .= $this->obj('ExtraMeta')->forTemplate();
         }
 
-        $this->extend('MetaTags', $tagString);
+        $this->extend('updateMetaTags', $tagString);
 
         return $tagString;
     }
